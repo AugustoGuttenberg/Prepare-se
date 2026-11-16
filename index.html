@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123b50">
+  <meta name="description" content="Informação, prevenção e cuidado sem julgamentos: entenda a PrEP, a PEP e a prevenção combinada do HIV.">
+  <title>PREPARE-SE | Informação, prevenção e cuidado</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+      <symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.5a2 2 0 0 1-.2.9L4.7 20.6a1 1 0 0 0 .9 1.4h12.8a1 1 0 0 0 .9-1.4l-5.1-10.2a2 2 0 0 1-.2-.9V2M8.5 2h7M7 16h10"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.5 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3M12 9v4M12 17h.01"/></symbol>
+      <symbol id="i-hospital" viewBox="0 0 24 24"><path d="M12 6v4M14 8h-4M14 14h-4M14 18h-4M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/></symbol>
+      <symbol id="i-siren" viewBox="0 0 24 24"><path d="M7 18v-6a5 5 0 1 1 10 0v6M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2zM21 12h1M2 12h1M12 2v1M4.9 4.9l.7.7M19.1 4.9l-.7.7"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-access" viewBox="0 0 24 24"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1M5 8l3-3 5.5 3-2.4 3.5M4.2 14.5a5 5 0 0 0 6.9 6M13.8 17.5a5 5 0 0 0-6.9-6"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    </defs>
+  </svg>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" id="brand">PREP<span>ARE-SE</span></a>
+      <button class="menu" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <nav id="mainNav" aria-label="Principal">
+        <a href="#prep">Conheça a PrEP</a>
+        <a href="#prep-pep">PrEP ou PEP?</a>
+        <a href="#medicamentos">Medicamentos</a>
+        <a href="#orientacao">Orientações</a>
+        <a href="#meu-cuidado">Meu cuidado</a>
+        <a href="#exames">Exames</a>
+        <a href="#servicos">Onde encontrar</a>
+        <a href="#aprenda">Aprenda</a>
+        <a href="#acolhimento">Acolhimento</a>
+        <a href="#sobre">Sobre</a>
+      </nav>
+      <div class="tools">
+        <button class="chip" id="simpleBtn" aria-pressed="false" title="Mostrar explicações em linguagem mais simples">Explique de um jeito mais fácil</button>
+        <button class="chip" id="discreetBtn" aria-pressed="false" title="Oculta o nome do site e esconde anotações na tela">Modo discreto</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Informação • prevenção • acolhimento</div>
+          <h1>Cuidar da saúde sexual é um <em>direito.</em></h1>
+          <p>Um espaço para entender a PrEP, conhecer formas de prevenção do HIV e encontrar caminhos para cuidar de você, sem julgamentos.</p>
+          <div class="actions">
+            <a class="btn" href="#comecar">Não sei por onde começar <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn outline" href="#prep">Quero conhecer a PrEP</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orb"></div>
+          <div class="art-card one"><b><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></b>Prevenção<br>com informação</div>
+          <div class="art-card two">Seu cuidado<br>começa aqui</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVISO PEP -->
+    <div class="notice" role="region" aria-label="Aviso de urgência">
+      <div class="wrap notice-row">
+        <div>
+          <strong>Tive uma possível exposição ao HIV. O que faço?</strong>
+          <p>A PEP é uma medida de urgência e deve ser iniciada o quanto antes, em até 72 horas.</p>
+        </div>
+        <a class="btn coral" href="#prep-pep">Entenda e procure atendimento</a>
+      </div>
+    </div>
+
+    <!-- NÃO SEI POR ONDE COMEÇAR -->
+    <section id="comecar">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Um primeiro passo</div>
+          <h2>O que você precisa hoje?</h2>
+          <p>Escolha a opção que mais combina com a sua dúvida. Este guia é educativo e não substitui avaliação profissional.</p>
+        </div>
+        <div class="split start-split">
+          <div class="choice-list" id="startChoices" role="group" aria-label="O que você precisa hoje?">
+            <button class="choice" data-key="entender"><svg class="ic" aria-hidden="true"><use href="#i-message"/></svg> Quero entender o que é PrEP</button>
+            <button class="choice" data-key="exposicao"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg> Tive uma possível exposição ao HIV</button>
+            <button class="choice" data-key="teste"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg> Quero fazer um teste de HIV</button>
+            <button class="choice" data-key="usuario"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg> Já utilizo PrEP e tenho dúvidas</button>
+            <button class="choice" data-key="vergonha"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg> Tenho vergonha ou medo de procurar atendimento</button>
+            <button class="choice" data-key="aprender"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg> Quero aprender mais sobre prevenção</button>
+          </div>
+          <div class="panel" id="startResult" aria-live="polite">
+            <span class="tag">Seu caminho</span>
+            <h3>Escolha uma opção ao lado</h3>
+            <p>Vamos indicar o próximo passo mais útil para o seu momento. Não é necessário informar dados pessoais.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREP -->
+    <section class="soft" id="prep">
+      <div class="wrap split">
+        <div>
+          <div class="eyebrow">Conheça a PrEP</div>
+          <h2 class="h2-inline">Prevenção também é poder escolher.</h2>
+          <p>A PrEP (Profilaxia Pré-Exposição) é uma estratégia de prevenção do HIV utilizada <strong>antes</strong> de possíveis exposições. A indicação, a modalidade e o acompanhamento devem ser avaliados por um profissional de saúde.</p>
+          <p class="easy">Em palavras simples: é um cuidado que a pessoa combina com a equipe de saúde para se proteger do HIV <em>antes</em> de uma situação de risco.</p>
+          <p>A PrEP previne o HIV, mas <strong>não protege contra outras infecções sexualmente transmissíveis (ISTs)</strong>. Por isso, faz parte de uma estratégia de prevenção combinada.</p>
+          <a class="btn" href="#servicos">Saiba onde buscar atendimento</a>
+        </div>
+        <div class="panel">
+          <span class="tag">Descubra se vale conversar com um profissional</span>
+          <h3>Autoavaliação educativa</h3>
+          <div id="selfCheck" aria-live="polite"></div>
+          <p class="privacy">Este questionário não diagnostica nem indica tratamento. Nenhuma resposta é enviada ou armazenada.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREP x PEP -->
+    <section id="prep-pep">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Entenda a diferença</div>
+          <h2>PrEP ou PEP?</h2>
+          <p>As duas são estratégias de prevenção do HIV, mas são utilizadas em momentos diferentes.</p>
+        </div>
+        <div class="compare">
+          <article>
+            <h3>PrEP</h3>
+            <p><strong>Antes de uma possível exposição.</strong></p>
+            <p>Estratégia preventiva planejada, com avaliação profissional, orientação sobre a modalidade e acompanhamento periódico.</p>
+          </article>
+          <article class="pep">
+            <h3>PEP</h3>
+            <p><strong>Depois de uma possível exposição.</strong></p>
+            <p>Medida de urgência que precisa ser iniciada o mais rápido possível, em até 72 horas. A equipe de saúde avalia a situação e orienta o cuidado.</p>
+          </article>
+        </div>
+        <div class="urgent" role="alert">
+          <strong><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg> Se houve uma possível exposição recente:</strong> não espere por um questionário ou por sintomas. Procure agora um serviço de saúde, pronto atendimento ou serviço de referência para avaliação da PEP. Em caso de dúvida sobre onde ir, o Disque Saúde (136) pode orientar.
+        </div>
+      </div>
+    </section>
+
+    <!-- MEDICAMENTOS -->
+    <section class="soft" id="medicamentos">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Biblioteca de medicamentos</div>
+          <h2>Medicamentos usados na prevenção do HIV</h2>
+          <p>Fichas farmacológicas educativas. A combinação <strong>TDF + FTC</strong> é a base da PrEP oral. Bula, protocolo vigente e profissional de saúde sempre prevalecem.</p>
+        </div>
+        <div class="faq" id="medList"></div>
+      </div>
+    </section>
+
+    <!-- CENTRAL DE ORIENTAÇÃO -->
+    <section id="orientacao">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Central de orientação</div>
+          <h2>Situações do dia a dia</h2>
+          <p>Orientações educativas baseadas em protocolos oficiais. Nenhuma ferramenta aqui indica dose extra, reinício ou mudança de tratamento: isso depende de avaliação profissional.</p>
+        </div>
+        <div class="split start-split">
+          <div class="choice-list" id="orChoices" role="group" aria-label="Situações"></div>
+          <div class="panel" id="orResult" aria-live="polite"><span class="tag">Orientação</span><h3>Escolha uma situação</h3><p>Você verá o que costuma ser orientado e quando procurar a equipe de saúde.</p></div>
+        </div>
+        <div class="split" style="margin-top:28px">
+          <div class="panel">
+            <span class="tag">Interações medicamentosas</span>
+            <h3>Uso outro medicamento</h3>
+            <label for="ixQ">Nome do medicamento (ex.: ibuprofeno)</label>
+            <input type="search" id="ixQ" list="ixList" autocomplete="off"><datalist id="ixList"></datalist>
+            <div id="ixOut" aria-live="polite"></div>
+            <p class="privacy">Base didática e limitada. Não ter resultado <strong>não significa</strong> ausência de interação: confirme com a bula, o farmacêutico ou o médico.</p>
+          </div>
+          <div class="panel">
+            <span class="tag">Efeitos adversos</span>
+            <h3>O que estou sentindo?</h3>
+            <div class="filters" id="sxChips" role="group" aria-label="Sintomas"></div>
+            <div id="sxOut" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEU CUIDADO -->
+    <section class="soft" id="meu-cuidado">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Acompanhamento opcional</div>
+          <h2>Meu cuidado</h2>
+          <p>Quem utiliza PrEP pode organizar consultas, exames e dúvidas para a próxima conversa com a equipe de saúde. Nada é enviado a servidores: as anotações ficam apenas neste aparelho.</p>
+        </div>
+        <div class="split">
+          <div class="panel">
+            <h3>Prepare sua próxima consulta</h3>
+            <label for="nextDate">Data da próxima consulta ou exame (opcional)</label>
+            <input type="date" id="nextDate">
+            <p id="nextDateInfo" class="privacy" aria-live="polite"></p>
+            <label for="duvida">Uma dúvida que quero levar:</label>
+            <textarea id="duvida" placeholder="Escreva aqui (não inclua dados pessoais)..."></textarea>
+            <div class="row">
+              <button class="btn small" id="saveNote">Salvar neste aparelho</button>
+              <button class="btn small outline" id="clearNote">Limpar anotações</button>
+            </div>
+            <ul id="noteList" class="notes"></ul>
+            <p class="privacy">Evite inserir informações sensíveis em dispositivos compartilhados. Para lembretes, use o calendário do seu aparelho com um nome neutro (ex.: “Consulta”). Dúvidas sobre dose esquecida devem ser tiradas com a equipe, pois dependem da modalidade prescrita.</p>
+          </div>
+          <div class="panel">
+            <span class="tag">Prepare sua primeira consulta</span>
+            <h3>Checklist</h3>
+            <ul class="checklist" id="firstVisit">
+              <li><label><input type="checkbox"> Pesquisar qual unidade de saúde oferece PrEP na minha região</label></li>
+              <li><label><input type="checkbox"> Confirmar horários e se preciso agendar</label></li>
+              <li><label><input type="checkbox"> Anotar minhas dúvidas e o que me preocupa</label></li>
+              <li><label><input type="checkbox"> Lembrar de medicamentos e vacinas que uso ou já tomei</label></li>
+              <li><label><input type="checkbox"> Perguntar sobre exames, retornos e prevenção combinada</label></li>
+            </ul>
+            <p class="easy">O que esperar: uma conversa acolhedora, sigilosa e sem julgamentos, com orientação sobre testagem e as opções disponíveis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACOMPANHAMENTO -->
+    <section id="acompanhamento">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Acompanhamento farmacoterapêutico</div>
+          <h2>Minha adesão e meus sintomas</h2>
+          <p>Área opcional e privada: tudo fica apenas neste aparelho.</p>
+        </div>
+        <div class="split">
+          <div class="panel">
+            <h3>Dias em que tomei a medicação</h3>
+            <p class="privacy">Toque no dia (últimos 28 dias).</p>
+            <div class="cal" id="adCal"></div>
+            <p class="privacy" id="adText" aria-live="polite"></p>
+            <h3 style="margin-top:22px">Lembrete discreto</h3>
+            <label for="remTime">Horário</label>
+            <input type="time" id="remTime">
+            <div class="row"><button class="btn small" id="remOn">Ativar</button><button class="btn small outline" id="remOff">Desativar</button></div>
+            <p class="privacy" id="remMsg" aria-live="polite">A notificação mostra só “Lembrete”, sem nome de medicamento, e funciona com a página aberta, conforme o navegador.</p>
+          </div>
+          <div class="panel">
+            <h3>Efeitos adversos percebidos</h3>
+            <label for="aeTxt">O que você sentiu?</label>
+            <textarea id="aeTxt" maxlength="300" placeholder="Ex.: náusea nas primeiras semanas"></textarea>
+            <div class="row"><button class="btn small" id="aeSave">Registrar</button><button class="btn small outline" id="aeClear">Limpar</button></div>
+            <ul id="aeList" class="notes"></ul>
+            <p class="privacy">Leve esta lista à consulta. Não interrompa a medicação por conta própria.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAMES -->
+    <section class="soft" id="exames">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Exames e monitoramento</div>
+          <h2>Cuidado com exames e consultas</h2>
+          <p>A periodicidade é definida pela equipe de saúde. Registre as datas conforme orientado.</p>
+        </div>
+        <div class="grid" id="examList"></div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section id="servicos">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Acesso ao cuidado</div>
+          <h2>Onde encontrar atendimento</h2>
+          <p>Procure uma unidade de saúde, serviço de testagem ou Serviço de Atenção Especializada (SAE). Confirme previamente se o local oferece o atendimento desejado e os horários.</p>
+        </div>
+        <div class="grid">
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-hospital"/></svg></div><h3>PrEP e acompanhamento</h3><p>Consulte a rede pública de saúde (SUS) e pergunte sobre os serviços que oferecem PrEP na sua região.</p></div>
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg></div><h3>Testagem para HIV</h3><p>Unidades de saúde e serviços especializados podem orientar sobre testagem e próximos passos.</p></div>
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-siren"/></svg></div><h3>Atendimento para PEP</h3><p>Em caso de possível exposição recente, procure atendimento imediatamente. A PEP deve começar em até 72 horas.</p></div>
+        </div>
+
+        <div class="panel map-panel">
+          <div class="map-head">
+            <div>
+              <h3>Mapa de serviços</h3>
+              <p class="privacy">Serviços de PrEP e PEP (Portal Conecta Recife), UPAs e policlínicas. Use “Atualizar dados” na aba Lista para registrar telefone, horário e a data da última confirmação. Dados reunidos em 16/11/2026 a partir de fontes oficiais. Confirme horários e serviços antes de ir.</p>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Forma de visualização">
+              <button role="tab" id="tabMap" aria-selected="true" aria-controls="mapView"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg> Mapa</button>
+              <button role="tab" id="tabList" aria-selected="false" aria-controls="listView" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg> Lista</button>
+            </div>
+          </div>
+          <div class="filters" role="group" aria-label="Filtrar serviços">
+            <button class="chip active" data-filter="todos">Todos</button>
+            <button class="chip" data-filter="prep">PrEP</button>
+            <button class="chip" data-filter="pep">PEP</button>
+            <button class="chip" data-filter="teste">Testagem rápida</button>
+            <button class="chip" data-filter="insumos">Preservativos e insumos</button>
+            <button class="chip" data-filter="upa">UPA</button>
+            <button class="chip" data-filter="policlinica">Policlínica</button>
+            <button class="chip" data-filter="sae">SAE (atenção ao HIV)</button>
+          </div>
+          <div id="mapView" role="tabpanel" aria-labelledby="tabMap">
+            <div id="map" class="map" role="region" aria-label="Mapa de UPAs e policlínicas do Recife e região"></div>
+            <ul class="legend" aria-label="Legenda">
+              <li><i class="dot upa"></i> UPA (urgência 24 h)</li>
+              <li><i class="dot pol"></i> Policlínica</li>
+              <li><i class="dot sae"></i> Policlínica com SAE (HIV)</li>
+            </ul>
+            <p class="privacy">As posições no mapa são aproximadas. Para chegar ao local exato, use o botão “Abrir no Google Maps” de cada serviço, que busca pelo endereço. Unidades sem ponto no mapa aparecem só na lista.</p>
+          </div>
+          <div id="listView" role="tabpanel" aria-labelledby="tabList" hidden>
+            <div id="serviceList" aria-live="polite"></div>
+          </div>
+          <p class="privacy sources">Fontes: <a href="https://www.gov.br/aids/pt-br/assuntos/prevencao-combinada/prep-profilaxia-pre-exposicao/prep-profilaxia-pre-exposicao" target="_blank" rel="noopener">Ministério da Saúde, PrEP</a> • <a href="https://conecta.recife.pe.gov.br/servico/1186" target="_blank" rel="noopener">Conecta Recife, acesso à PrEP</a> • <a href="https://acervo.cbnrecife.com/artigo/recife-amplia-oferta-de-prevencao-ao-hiv-na-rede-municipal" target="_blank" rel="noopener">CBN Recife (contexto)</a> • <a href="https://g1.globo.com/pe/pernambuco/noticia/hospital-oswaldo-cruz-comeca-a-oferecer-tratamento-de-pre-exposicao-ao-hiv-no-recife.ghtml" target="_blank" rel="noopener">G1 PE, Hospital Oswaldo Cruz (contexto)</a> •
+            <a href="https://cartadeservicos.saude.pe.gov.br/endereco-upa/" target="_blank" rel="noopener">Carta de Serviços da Secretaria de Saúde de Pernambuco (UPAs)</a> •
+            <a href="https://www2.recife.pe.gov.br/sites/default/files/testagem_rapida_hiv_e_sifilis.pdf" target="_blank" rel="noopener">Prefeitura do Recife, testagem rápida de HIV e sífilis (policlínicas)</a> •
+            <a href="https://www.folhape.com.br/noticias/recife-inaugura-mais-um-servico-de-atencao-especializada-em-hiv-sae/457741/" target="_blank" rel="noopener">Folha de Pernambuco, SAE no Recife</a> •
+            <a href="https://www.cidadaorecifense.com.br/saude/unidadessaude/380" target="_blank" rel="noopener">Cidadão Recifense, Policlínica Lessa de Andrade</a>.
+            Mapa: tiles © <a href="https://www.esri.com" target="_blank" rel="noopener">Esri</a>, DeLorme, NAVTEQ e colaboradores do OpenStreetMap.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APRENDA -->
+    <section class="soft" id="aprenda">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Aprender sem complicação</div>
+          <h2>Mitos e verdades</h2>
+          <p>Toque em <strong>Mito</strong> ou <strong>Verdade</strong> para cada afirmação e confira a explicação.</p>
+        </div>
+        <div id="mythList" class="myths"></div>
+
+        <div class="panel quiz-panel">
+          <span class="tag">Teste rápido de conhecimento</span>
+          <h3>A PrEP é utilizada em qual momento?</h3>
+          <div class="quiz-options" id="quiz">
+            <button data-correct="false">Depois de uma exposição</button>
+            <button data-correct="true">Antes de possíveis exposições</button>
+            <button data-correct="false">Somente para tratar o HIV</button>
+          </div>
+          <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+        </div>
+
+        <div class="section-head challenge-head">
+          <div class="eyebrow">Jornada educativa</div>
+          <h2>Desafio “7 dias de conhecimento”</h2>
+          <p>Uma pequena atividade por dia. Marque as que você concluiu. O progresso fica só neste aparelho.</p>
+        </div>
+        <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+        <p id="progressText" class="privacy" aria-live="polite"></p>
+        <div class="grid" id="challenge"></div>
+      </div>
+    </section>
+
+    <!-- PREVENÇÃO COMBINADA -->
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Prevenção combinada</div>
+          <h2>Mais de uma forma de se cuidar.</h2>
+          <p>A prevenção do HIV pode combinar diferentes estratégias, de acordo com as necessidades de cada pessoa. Nenhuma delas substitui todas as outras.</p>
+        </div>
+        <div class="grid">
+          <div class="card"><h3>PrEP e PEP</h3><p>Estratégias medicamentosas preventivas para momentos diferentes: antes ou depois de uma possível exposição.</p></div>
+          <div class="card"><h3>Preservativos</h3><p>Podem ajudar a prevenir o HIV e outras ISTs, além de gravidez não planejada, conforme o tipo de relação.</p></div>
+          <div class="card"><h3>Testagem e cuidado</h3><p>Testagem, diagnóstico e tratamento de ISTs, vacinação contra HPV e hepatites e tratamento do HIV também fazem parte do cuidado.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACOLHIMENTO -->
+    <section class="soft" id="acolhimento">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Conversas sem julgamento</div>
+          <h2>Sua dúvida merece espaço.</h2>
+          <p>É comum ter receio de procurar PrEP, conversar com parceiros ou perguntar sobre efeitos e acompanhamento. Você não precisa saber os termos técnicos para pedir ajuda.</p>
+        </div>
+        <div class="split">
+          <div class="faq" id="faq"></div>
+          <div>
+            <div class="panel">
+              <span class="tag">Caixa de perguntas anônimas</span>
+              <h3>Envie sua dúvida</h3>
+              <form class="form" id="askForm">
+                <label for="ask">Sua pergunta (sem nome, telefone ou outros dados pessoais)</label>
+                <textarea id="ask" required maxlength="600" placeholder="Escreva sua dúvida..."></textarea>
+                <button class="btn" type="submit">Enviar pergunta</button>
+                <p class="privacy" id="askMsg" aria-live="polite">Protótipo: nenhuma pergunta é enviada. Na versão publicada, as respostas serão moderadas e revisadas por profissionais de saúde.</p>
+              </form>
+            </div>
+            <div class="panel stories">
+              <span class="tag">Eu também tinha dúvidas</span>
+              <h3>Relatos de quem já passou por isso</h3>
+              <p>Espaço reservado para relatos voluntários, publicados somente com consentimento explícito, revisão e proteção da identidade (com opção de relato anônimo). Ainda não há relatos publicados neste protótipo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Sobre o projeto</div>
+          <h2>Compromissos do PREPARE-SE</h2>
+        </div>
+        <div class="grid">
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></div><h3>Privacidade</h3><p>Sem cadastro para acessar informações básicas e sem coleta de dados sensíveis desnecessários.</p></div>
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-access"/></svg></div><h3>Acessibilidade</h3><p>Funciona em celulares, com letras legíveis, bom contraste e navegação simples.</p></div>
+          <div class="card"><div class="icon"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></div><h3>Segurança clínica</h3><p>Não diagnostica, não prescreve e orienta a procurar profissionais e serviços de saúde.</p></div>
+        </div>
+        <p class="disclaimer">Conteúdo baseado em materiais oficiais do Ministério da Saúde. Última revisão do conteúdo: <strong>[inserir data]</strong> • Responsável técnico: <strong>[inserir profissional]</strong>. Antes de publicar, confirme a versão vigente dos protocolos e dos serviços.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div><div class="footer-brand">PREPARE-SE</div><p>Informação, prevenção e cuidado sem julgamentos.</p></div>
+        <div><strong>Sobre este projeto</strong><p>Uma plataforma educativa para apoiar a autonomia, o acolhimento e o acesso ao cuidado.</p></div>
+        <div><strong>Referências para revisão</strong><p>Ministério da Saúde • PCDT de PrEP • Materiais oficiais sobre PEP, prevenção combinada, testagem e IST/HIV.</p></div>
+      </div>
+      <div class="disclaimer foot-disclaimer">Conteúdo educativo. Não diagnostica, prescreve ou substitui atendimento profissional. Informações clínicas, protocolos e serviços devem ser revisados e atualizados por profissionais qualificados antes da publicação.</div>
+      <small>© 2026 PREPARE-SE. Protótipo demonstrativo. Acessível em celular e computador.</small>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="script.js"></script>
+</body>
+</html>
